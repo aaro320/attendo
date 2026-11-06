@@ -269,7 +269,7 @@ export default function InstructorDashboardPage() {
     )
   }
 
-  /* ---------- Row formatting for table ---------- */
+/* ---------- Row formatting for table ---------- */
   const rows: AttendanceRow[] = useMemo(() => {
     return roster.map((student) => {
       const entry = logs[student.student_num]
@@ -285,7 +285,9 @@ export default function InstructorDashboardPage() {
         logged_at: entry?.logged_at ?? null,
         device_fingerprint: entry?.device_fingerprint ?? null,
         is_flagged: entry?.is_flagged ?? false,
-      }
+        log_id: (entry as any)?.log_id ?? null,
+        time_scanned: (entry as any)?.time_scanned ?? entry?.logged_at ?? null,
+      } as AttendanceRow
     })
   }, [roster, logs])
 
