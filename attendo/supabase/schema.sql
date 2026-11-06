@@ -1,24 +1,3 @@
--- =====================================================================
--- Attendo: Smart Attendance Monitoring System
--- Bulacan State University - Computer Engineering Department
---
--- Paste this whole script into Supabase > SQL Editor > New query > Run.
--- It is idempotent: safe to re-run (tables, functions and policies are
--- created only if missing / replaced; seed data is skipped if present).
---
--- Sections
---   1. Extensions
---   2. Tables + indexes
---   3. Identity helper functions
---   4. Row Level Security policies
---   5. RPC functions (token rotation, verify, submit attendance)
---   6. Grants
---   7. Realtime
---   8. Seed data (BulSU CPE 3A)
---
--- Time zone note: every "today" / "now" decision is made in Asia/Manila,
--- because the database itself runs in UTC.
--- =====================================================================
 
 -- 1. EXTENSIONS ------------------------------------------------------
 create extension if not exists pgcrypto with schema extensions;
