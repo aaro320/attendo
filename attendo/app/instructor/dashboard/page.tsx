@@ -246,7 +246,7 @@ export default function InstructorDashboardPage() {
 
     setCreating(false)
     if (error || !data) {
-      setActionError(friendlyError(error, 'Could not create the class session.'))
+      setActionError(friendlyError(error))
       return
     }
     const created = data as ClassSession
@@ -261,7 +261,7 @@ export default function InstructorDashboardPage() {
       .update({ is_active: nextActive })
       .eq('session_id', selected.session_id)
     if (error) {
-      setActionError(friendlyError(error, 'Failed to update session state.'))
+      setActionError(friendlyError(error))
       return
     }
     setSessions((prev) =>
