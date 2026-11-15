@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2, Eye, EyeOff, GraduationCap, Presentation, QrCode, ShieldCheck, TriangleAlert, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -246,6 +247,13 @@ export default function LoginPage() {
                 Sign in as {copy.label.toLowerCase()}
               </Button>
             </form>
+
+            <div className="mt-6 border-t border-slate-200 pt-6 text-center">
+              <p className="mb-3 text-sm text-slate-600">New to Attendo?</p>
+              <Button asChild variant="outline" size="lg" className="w-full">
+                <Link href="/register">Register</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
