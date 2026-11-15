@@ -19,6 +19,36 @@ Next.js (App Router) · TypeScript · Tailwind · Supabase (Postgres + RLS + Aut
    Accounts are linked to students/instructors **by e-mail**.)
 5. **Authentication → URL Configuration:** add `http://localhost:3000/reset-password` (and your Vercel URL) to the redirect allow-list so password recovery works.
 
+## 1b. Registration with an e-mailed code (Gmail)
+
+Students and instructors register themselves at `/register` (there is a **Register** button on the login page).
+They enter their details, and Supabase e-mails a 6-digit code to the address they gave. They type the code to finish.
+Their `students` / `instructors` record is only created after the code is accepted.
+
+Do these once, in order:
+
+1. **SQL Editor →** paste all of `supabase/registration.sql` → **Run** (after `schema.sql`; safe to re-run).
+2. **Authentication → Sign In / Providers → Email:** turn **Confirm email ON**. (Leave "Email OTP Length" at 6.)
+3. **Authentication → Emails → SMTP Settings:** turn on **Custom SMTP**. Supabase's built-in sender only delivers to your own
+   team's addresses and is capped at a few emails per hour, so real students will not get codes without this.
+   Using a Gmail account as the sender:
+   - Host `smtp.gmail.com`, Port `465`
+   - Username: the full Gmail address. Sender email: the same address. Sender name: `Attendo`
+   - Password: a Google **App Password** (Google Account → Security → turn on 2-Step Verification → App passwords).
+     Do not use your normal Gmail password.
+   - Gmail limits a personal account to about 500 emails a day, which is plenty for one class.
+4. **Authentication → Emails → Templates → Confirm sign up:** set the subject to `Your Attendo verification code`
+   and paste in `supabase/email-template-confirm-signup.html`. It must contain `{{ .Token }}` (the code), not a link.
+5. **Authentication → Rate Limits:** raise "Rate limit for sending emails" above the default if a whole class registers at once.
+6. **Change the instructor access code** (default `CPE-INSTRUCTOR-2026`):
+   `update public.registration_settings set value = 'YOUR-NEW-SECRET-CODE' where key = 'instructor_access_code';`
+
+Notes:
+- A student number that is already on the roster (for example the demo `2023101001`) can only be claimed with the e-mail the roster holds for it.
+- Anyone can register a student number that is not taken yet. If you need only enrolled students to register, load the real
+  class list into `students` first and ask for a change so registration allows roster numbers only.
+- The instructor access code is the only thing stopping a student from registering as an instructor, so keep it private.
+
 ## 2. Run
 
 ```bash
